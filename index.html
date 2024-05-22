@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="referrer" content="no-referrer">
+	<title>chart,chat</title>
+
+</head>
+<script src="./js/echarts.min.js"></script>
+<script src="./js/echarts-wordcloud.min.js"></script>
+
+<style>
+	body {
+		/* position: fixed; */
+		z-index: -10;
+		background-image: url("img/bg.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		width: 99%;
+		height: 100%;
+	}
+	
+	.chatdiv {
+		/* position: fixed; */
+		z-index: -1;
+		background: #ffffff;
+		background-image: url("img/bg.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		display: flex;
+		display: -webkit-flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		/*width: 620px;*/
+		/* border: #608b82 1px solid; */
+	}
+	
+	.charbox {
+		margin: 2px;
+		width: 620px;
+		height: 538px;
+		border: #608b82 solid 1px;
+		border-radius: 6px;
+	}
+	
+	.bchart {
+		width: 620px;
+		height: 482px;
+		/* border: #608b82 solid 1px; */
+		/* border-bottom: #608b82 solid 1px;  */
+		/* border-radius: 6px; */
+	}
+	
+	.charbox>div>input {
+		margin: 1px;
+	}
+	
+	#ymonth,
+	#ymonthe {
+		cursor: pointer;
+		border: 1px solid #608b82;
+		border-radius: 6px;
+		height: 24px;
+		width: 96px;
+		color: #608b82;
+		font-weight: 600;
+		outline: none;
+	}
+	
+	#jsale1,
+	#suvsale1,
+	#evsale1,
+	#chsale1,
+	#fosale1,
+	#fasale1,
+	#allsale,
+	#rq1,
+	#rq2,
+	#rq3 {
+		cursor: pointer;
+		border: 1px solid #608b82;
+		border-radius: 6px;
+		height: 24px;
+		color: #608b82;
+		font-weight: 600;
+		outline: none;
+	}
+	
+	#ymonth:hover,
+	#ymonthe:hover,
+	#jsale1:hover,
+	#suvsale1:hover,
+	#evsale1:hover,
+	#chsale1:hover,
+	#fosale1:hover,
+	#fasale1:hover,
+	#allsale:hover,
+	#rq1:hover,
+	#rq2:hover,
+	#rq3:hover {
+		color: #d5a9d0;
+	}
+	
+	.mstitle,
+	.msbox {
+		display: flex;
+		flex-direction: row;
+	}
+	
+	.msgbox {
+		margin: 2px;
+		padding: 2px;
+		width: 400px;
+		height: 400px;
+		border: 1px solid #b0a4e3;
+		border-radius: 6px;
+		overflow: auto;
+		word-break: break-all;
+		box-shadow: 1px 1px 1px 1px #a797e8;
+	}
+	
+	.msgtip {
+		margin: 2px;
+		padding: 1px;
+		width: 210px;
+		font-size: 14px;
+		height: 400px;
+		/* border: 1px solid #1685a9; */
+		border: 1px solid #b0a4e3;
+		border-radius: 6px;
+		/* overflow: auto;
+        word-break: break-all; */
+		box-shadow: 1px 1px 1px 1px #a797e8;
+	}
+	
+	.usertip,
+	.mtip {
+		margin: 1px;
+		width: 200px;
+		height: 196px;
+		border-bottom: 1px solid #b0a4e3;
+		overflow: auto;
+		word-break: break-all;
+	}
+	
+	.boxtitle {
+		margin: 2px;
+		padding: 2px;
+		width: 400px;
+		height: 20px;
+		font-weight: 600;
+		font-size: 18px;
+		/* color: #3d3b4f; */
+		color: #608b82;
+	}
+	
+	.tiptitle {
+		margin: 2px;
+		padding: 2px;
+		width: 210px;
+		height: 20px;
+		font-weight: 600;
+		font-size: 18px;
+		/* color: #3d3b4f; */
+		color: #608b82;
+	}
+	
+	#linkval,
+	#nickval,
+	#tonick,
+	#msgval {
+		border: 0;
+		border-bottom: 2px solid #b0a4e3;
+		padding: 0 2px;
+		height: 24px;
+	}
+	
+	#msgval {
+		width: 241px;
+	}
+	
+	#linkval:focus,
+	#nickval:focus,
+	#tonick:focus,
+	#msgval:focus {
+		outline: 0;
+	}
+	
+	#linkval::placeholder,
+	#nickval::placeholder,
+	#tonick::placeholder,
+	#msgval::placeholder {
+		color: #85a29d;
+	}
+	
+	#connbtn,
+	#clsbtn,
+	#clspbtn,
+	#emojibtn,
+	#sendbtn {
+		cursor: pointer;
+		border: 1px solid #b0a4e3;
+		border-radius: 6px;
+		height: 24px;
+		color: #608b82;
+		font-weight: 600;
+		outline: none;
+		box-shadow: 2px 2px 1px 1px #a797e8;
+	}
+	
+	#connbtn:hover,
+	#clsbtn:hover,
+	#clspbtn:hover,
+	#emojibtn:hover,
+	#sendbtn:hover {
+		color: #d5a9d0;
+	}
+	
+	#connbtn:disabled,
+	#sendbtn:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+	
+	.sendbox {
+		margin: 4px 1px;
+		padding: 1px;
+	}
+	
+	.sendbox>div>input {
+		margin: 2px 6px;
+	}
+	
+	.sendbox>div>div>input {
+		margin: 2px 6px;
+	}
+	
+	.sendbox>div {
+		position: relative;
+	}
+	
+	#emoji {
+		/* position: relative;
+        top: -190px;
+        left: 26%; */
+		z-index: 99;
+		/* margin: 4px; */
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		/* overflow: auto; */
+		width: 260px;
+		cursor: pointer;
+		background: #edf9f6;
+	}
+	
+	#emjbox {
+		/* position: relative; */
+		position: absolute;
+		/* top: -196px; */
+		top: -166px;
+		left: 26%;
+		z-index: 10;
+		margin: 4px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		overflow: auto;
+		width: 260px;
+		cursor: pointer;
+		background: #edf9f6;
+		border: #608b82 1px solid;
+		border-radius: 6px;
+	}
+	
+	#emoji>div {
+		width: 26px;
+		height: 26px;
+	}
+	
+	#pernotic {
+		position: relative;
+		margin: 1px 4px;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: 600;
+		color: #608b82;
+		border: #608b82 1px solid;
+		border-radius: 6px;
+		box-shadow: 2px 2px 1px 1px #a797e8;
+	}
+	
+	#notpt {
+		width: 8px;
+		height: 8px;
+		line-height: 8px;
+		font-size: 6px;
+		color: #fff;
+		text-align: center;
+		background-color: #ec3810;
+		border-radius: 50%;
+		position: absolute;
+		right: -8px;
+		top: -2px;
+	}
+	
+	.noticposition {
+		position: relative;
+	}
+	
+	#notshow {
+		position: absolute;
+		background: #fff;
+		opacity: 0.8;
+		top: -336px;
+		left: 100px;
+		padding: 2px;
+		width: 300px;
+		height: 300px;
+		font-size: 12px;
+		font-weight: 600;
+		z-index: 9;
+		border: 1px solid #b0a4e3;
+		border-radius: 6px;
+		overflow: auto;
+		word-break: break-all;
+	}
+</style>
+
+<body>
+	<div class="chatdiv">
+		<div class="charbox">
+			<div class="bchart" id="chart">
+			</div>
+			<div>
+				<input type="month" id="ymonth">
+				<input type="month" id="ymonthe">
+				<input type="button" value="销量轿车" id="jsale1">
+				<input type="button" value="SUV" id="suvsale1">
+				<input type="button" value="电车" id="evsale1">
+				<input type="button" value="自主" id="chsale1">
+				<input type="button" value="合资" id="fosale1">
+				<input type="button" value="厂商" id="fasale1">
+				<input type="button" value="全部" id="allsale">
+			</div>
+			<div>
+				<input type="button" value="关注小型" id="rq1">
+				<input type="button" value="紧凑" id="rq2">
+				<input type="button" value="SUV" id="rq3">
+			</div>
+
+
+		</div>
+		<div class="chatbox">
+			<div class="mstitle">
+				<div class="boxtitle">
+					聊天信息
+				</div>
+				<div class="tiptitle">
+					提示信息
+				</div>
+			</div>
+			<div class="msbox">
+				<div class="msgbox">
+				</div>
+				<div class="msgtip">
+					<div class="usertip">
+					</div>
+					<div class="mtip"></div>
+				</div>
+
+			</div>
+			<div class="sendbox">
+				<div>
+					<input type="text" id="linkval" placeholder="连接地址">
+					<input type="button" value="连接" id="connbtn">
+					<input type="button" value="清聊天" id="clsbtn">
+					<input type="button" value="清私聊" id="clspbtn">
+					<span id="pernotic">私聊<span id="notpt" style="display:none"></span></span>
+					<div class="noticposition">
+						<div id="notshow" style="display:none"></div>
+					</div>
+				</div>
+				<div>
+					<div>
+						<input type="text" id="nickval" placeholder="昵称">
+						<input type="text" id="tonick" placeholder="要私聊的昵称">
+					</div>
+					<div>
+						<input type="text" id="msgval" placeholder="发送内容">
+						<input type="button" value="表情" id="emojibtn">
+						<input type="button" value="发送" id="sendbtn">
+					</div>
+					<div id="emjbox" style="display:none">
+						<div id="emoji"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	let socket = '';
+    let onlineu = '';
+    let menick = '';
+    let sockerr = false;
+
+    function handleStr(str) {
+        let starr = str.replace(/[`:_.~!@#$%^&*() \+ =<>?"{}|, \/ ;' \\ [ \] ·~！@#￥%……&*（）—— \+ ={}|《》？：“”【】、；‘’，。、]/g, '');
+        return starr;
+    }
+    // 连接
+    const connbtn = document.querySelector('#connbtn');
+    connbtn.addEventListener('click', function () {
+
+        let nicktxt = document.querySelector('#nickval').value;
+        let linktxt = document.querySelector('#linkval').value;
+        let uTip = document.querySelector('.usertip');
+        let mTip = document.querySelector('.mtip');
+        nicktxt = handleStr(nicktxt)
+
+        mTip.innerHTML = "";
+        if (linktxt.trim().length == 0) {
+            mTip.innerHTML += "输入连接!<br>";
+            return
+        }
+        if (nicktxt.trim().length == 0) {
+            mTip.innerHTML += "输入昵称!<br>";
+            return
+        }
+        if (nicktxt.length > 8) {
+            mTip.innerHTML += "昵称太长!(大于8)<br>";
+            return
+        }
+        menick = nicktxt;
+
+
+        // 创建WebSocket连接
+        let weblink = "wss://" + linktxt;
+        // let weblink = "ws://" + linktxt;
+        // let weblink = "ws://127.0.0.1:8800";
+        weblink += `&nick=${nicktxt}`;
+
+        socket = new WebSocket(weblink);
+        socket.onopen = function (e) {
+            // 连接成功后，发送一条消息
+            console.log(e)
+            socket.send(`【${nicktxt}】已连接!`);
+            connbtn.setAttribute("disabled", true);
+            document.title = `${nicktxt}的聊天`;
+            sockerr = false;
+        }
+        // 接收消息
+        socket.onmessage = function (e) {
+            // 接收到消息后，显示在页面上
+            const messageShow = document.querySelector('.msgbox');
+            let uTip = document.querySelector('.usertip');
+            let mTip = document.querySelector('.mtip');
+            let notics = document.querySelector('#notshow');
+            let noticpt = document.querySelector('#notpt');
+            // messageElement.textContent = event.data;
+            // console.log(e.data)
+            let msgdata = e.data;
+
+            if (msgdata.indexOf("[onlineusers:]") != -1) {
+                // let messageTip = document.querySelector('.msgtip');       
+                onlineu = "<span style='color:#337ded;font-weight: 600;'>" + msgdata.substring(14) + "</span><br>"
+                uTip.innerHTML = onlineu;
+
+            } else {
+
+                let n = msgdata.indexOf("：");
+                let msgname = msgdata.substring(0, n);
+
+                if (menick == msgname) {
+                    if (msgdata.indexOf(">T:>>") != -1 || msgdata.indexOf(">F:>>") != -1) {
+                        let n = 0;
+                        if (msgdata.indexOf(">T:>>") != -1) {
+                            // n = msgdata.indexOf(">T:>>")
+                            // let msdata = msgdata.substring(0, n);
+                            let msdata = msgdata.replace("T:", "");
+                            notics.innerHTML += "<span style='color:#704c91; font-weight: 600;'>" + msdata + "</span><br>";
+                        } else {
+                            n = msgdata.indexOf(">F:>>")
+                            let msdata = msgdata.substring(0, n);
+                            notics.innerHTML += "<span style='color:#2688a0; font-weight: 600;'>" + msdata + "</span><br>";
+                        }
+
+                        if (msgdata.indexOf(">F:>>") != -1) {
+                            let disp = notics.style.display;
+                            if (disp == "none") {
+                                noticpt.style.display = "block";
+                            }
+
+                        }
+                    } else {
+                        messageShow.innerHTML += "<span style='color:#7f9faf;font-size:14px;font-weight: 600;'>" + msgdata + "</span><br>";
+                    }
+
+                } else {
+                    if (!msgname) {
+                        mTip.innerHTML += "<span style='color:#f9906f;font-size:12px;'>" + msgdata + "</span><br>";
+                    } else if (msgdata.indexOf(">T:>>") != -1 || msgdata.indexOf(">F:>>") != -1) {
+                        let n = 0;
+                        if (msgdata.indexOf(">T:>>") != -1) {
+                            // n = msgdata.indexOf(">T:>>")
+                            // let msdata = msgdata.substring(0, n);
+                            let msdata = msgdata.replace("T:", "");
+                            notics.innerHTML += "<span style='color:#704c91; font-weight: 600;'>" + msdata + "</span><br>";
+                        } else {
+                            n = msgdata.indexOf(">F:>>");
+                            let msdata = msgdata.substring(0, n);
+                            notics.innerHTML += "<span style='color:#2688a0; font-weight: 600;'>" + msdata + "</span><br>";
+                        }
+
+                        if (msgdata.indexOf(">F:>>") != -1) {
+                            let disp = notics.style.display;
+                            if (disp == "none") {
+                                noticpt.style.display = "block";
+                            }
+                        }
+                    } else {
+                        messageShow.innerHTML += "<span style='color:#277d93;font-size:14px; font-weight: 600;'>" + msgdata + "</span><br>";
+                    }
+
+                }
+
+            }
+
+
+
+            messageShow.scrollTop = messageShow.scrollHeight;
+            uTip.scrollTop = uTip.scrollHeight;
+            mTip.scrollTop = mTip.scrollHeight;
+
+        }
+        // 
+        socket.onclose = function (e) {
+            console.log("close")
+            console.log(e)
+            let mTip = document.querySelector('.mtip');
+            let uTip = document.querySelector('.usertip');
+            uTip.innerHTML = "";
+            mTip.innerHTML += "连接已关闭!<br>";
+            connbtn.removeAttribute("disabled");
+            socket.close();
+            socket = '';
+        }
+        // 
+        socket.onerror = function (e) {
+            console.log("error:")
+            console.log(e)
+            sockerr = true
+            let mTip = document.querySelector('.mtip');
+            let uTip = document.querySelector('.usertip');
+            uTip.innerHTML = "";
+            mTip.innerHTML = "";
+            mTip.innerHTML += "连接错误!<br>";
+            connbtn.removeAttribute("disabled");
+        }
+
+    })
+    // 校检昵称
+    let nickput = document.querySelector('#nickval');
+    nickput.addEventListener('blur', function () {
+        let nicktxt = document.querySelector('#nickval').value;
+        document.querySelector('#nickval').value = handleStr(nicktxt);
+
+    })
+
+    // 清空聊天框
+    let msgcls = document.querySelector('#clsbtn');
+    msgcls.addEventListener('click', function () {
+        let messageShow = document.querySelector('.msgbox');
+        let mTip = document.querySelector('.mtip');
+        let conf = confirm("确定要清除吗？");
+        if (conf) {
+            messageShow.innerHTML = "";
+            mTip.innerHTML = "";
+        }
+    })
+
+    // 清私聊
+    let pcls = document.querySelector('#clspbtn');
+    pcls.addEventListener('click', function () {
+        let notshow = document.querySelector('#notshow');
+        let conf = confirm("确定要清除吗？");
+        if (conf) {
+            notshow.innerHTML = "";
+        }
+    })
+
+    // 私信
+    let noticbtn = document.querySelector('#pernotic');
+    noticbtn.addEventListener("click", function () {
+        let notics = document.querySelector('#notshow');
+        let noticpt = document.querySelector('#notpt');
+        let notdis = notics.style.display;
+        if (notdis == "block") {
+            notics.style.display = "none";
+        } else {
+            notics.style.display = "block";
+        }
+
+        noticpt.style.display = "none";
+        notics.scrollTop = notics.scrollHeight;
+
+    })
+
+    // 表情
+    const emobtn = document.querySelector('#emojibtn');
+    const emarr = ['&#128512', '&#128513', '&#128514', '&#128515', '&#128516', '&#128517', '&#128518', '&#128519', '&#128520',
+        '&#128521', '&#128522', '&#128523', '&#128524', '&#128525', '&#128526', '&#128527', '&#128528', '&#128529', '&#128530',
+        '&#128531', '&#128532', '&#128533', '&#128534', '&#128535', '&#128536', '&#128537', '&#128538', '&#128539', '&#128540', '&#128541',
+        '&#128542', '&#128543', '&#128544', '&#128545', '&#128546', '&#128547', '&#128548', '&#128549', '&#128550', '&#128551', '&#128552',
+        '&#128553', '&#128554', '&#128555', '&#128556', '&#128557', '&#128558', '&#128559', '&#128560', '&#128561', '&#128562', '&#128563',
+        '&#128564', '&#128565', '&#128566', '&#128567', '&#128577', '&#128578', '&#128579', '&#128580']
+    emobtn.addEventListener('click', function () {
+        let emojishow = document.querySelector('#emoji');
+        let emjbox = document.querySelector('#emjbox');
+        let dis = emjbox.style.display;
+        emojishow.innerHTML = "";
+        if (dis == "none") {
+            for (index in emarr) {
+                let ediv = document.createElement("div");
+                ediv.innerHTML = emarr[index];
+                ediv.setAttribute("class", "emj");
+                emojishow.appendChild(ediv);
+            }
+            emjbox.style.display = "block";
+            let edivs = document.querySelectorAll(".emj");
+            let msginput = document.querySelector('#msgval');
+            msginput.focus();
+            let emn = msginput.selectionStart;
+            let putval = msginput.value;
+            for (let j = 0; j < edivs.length; j++) {
+                edivs[j].onclick = function () {
+                    for (let i = 0; i < edivs.length; i++) {
+                        // console.log("emoj:", emarr[i])
+
+                        msginput.value = putval.slice(0, emn) + edivs[j].innerHTML + putval.slice(emn);
+                    }
+                }
+            }
+
+        } else {
+            emjbox.style.display = "none";
+
+        }
+        emojishow.addEventListener("click", function () {
+            emjbox.style.display = "none";
+
+        })
+
+    })
+
+    // 隐藏弹框
+    document.addEventListener('click', function (e) {
+        let emojishow = document.querySelector('#emoji');
+        let emojibtn = document.querySelector('#emojibtn');
+        let emjbox = document.querySelector('#emjbox');
+        if (e.target !== emojibtn && !emojibtn.contains(e.target)) {
+            // 表情隐藏
+            emjbox.style.display = "none";;
+
+        }
+        let noticbtn = document.querySelector('#pernotic');
+        let notics = document.querySelector('#notshow');
+        if (e.target !== noticbtn && !noticbtn.contains(e.target) && !notics.contains(e.target)) {
+            // 私信隐藏
+            notics.style.display = "none";
+
+        }
+
+    })
+
+
+    // 发送
+    const msgsend = document.querySelector('#sendbtn');
+    msgsend.addEventListener('click', function () {
+        let uTip = document.querySelector('.usertip');
+        let mTip = document.querySelector('.mtip');
+        let topers = document.querySelector('#tonick');
+        let pers = topers.value;
+        if (pers.trim().length == 0) {
+            pers = "";
+        }
+        if (!socket) {
+            mTip.innerHTML = "未连接!<br>";
+            return;
+        }
+        // console.log(socket.readyState)
+        let msgtxt = document.querySelector('#msgval').value;
+        let nicktxt = document.querySelector('#nickval').value;
+        nicktxt = handleStr(nicktxt)
+        if (nicktxt.trim().length == 0) {
+            mTip.innerHTML = "输入昵称!<br>";
+            return
+        }
+        if (msgtxt.trim().length == 0) {
+            mTip.innerHTML += "输入发送内容!<br>";
+            return
+        }
+        let sendata = `${nicktxt}：${msgtxt}`;
+        if (pers) {
+            if (pers == nicktxt) {
+                mTip.innerHTML += "不能发给自己!<br>";
+                return
+            }
+            sendata = `${nicktxt}：${msgtxt}[to:${pers}]`;
+            socket.send(sendata);
+            mTip.innerHTML += "私信已发送!<br>";
+        } else {
+            socket.send(sendata);
+            mTip.innerHTML += "消息已发送!<br>";
+        }
+        mTip.scrollTop = mTip.scrollHeight;
+
+        msgsend.setAttribute("disabled", true);
+        setTimeout(function () {
+            msgsend.removeAttribute("disabled");
+        }, 1000)
+    })
+
+    // 
+    // chart
+    // 
+    async function fetdata(ur) {
+        const resp = await fetch(ur);
+        return resp;
+    }
+    // 点击边框重置按钮样色
+    function chartbtnboder(btnarr) {
+        btnarr.forEach(item => {
+            item.style.border = "1px solid #608b82";
+            item.style.borderRadius = "6px";
+            item.style.color = "#608b82";
+        })
+    }
+    // 点击按钮变样色
+    function chartbtnstyle(btna) {
+        btna.style.border = "2px solid #76c3d6";
+        btna.style.borderRadius = "6px";
+        btna.style.color = "#a3715f";
+    }
+    let vbtn = 1;
+    let brand50 = [];
+    let brand100 = [];
+    let brdallname = [];
+    let brdallsales = [];
+    // 轿车
+    function jcchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=car&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            // console.log(res)
+
+            option.title[0].subtext = "轿车销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "轿车销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "轿车销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+
+
+
+    }
+    // suv销量
+    function succhart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=suv&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            option.title[0].subtext = "SUV销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "SUV销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "SUV销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+    }
+    // 电车
+    function evcchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=ev&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            option.title[0].subtext = "电车销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "电车销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "电车销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+    }
+    // 自主
+    function or1cchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=origin1&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            option.title[0].subtext = "自主销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "自主销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "自主销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+    }
+    // 合资
+    function or2cchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=origin2&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            option.title[0].subtext = "合资销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "合资销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "合资销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+    }
+    // 厂商
+    function facchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=factory&d=" + ym;
+
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            option.title[0].subtext = "厂商销量";
+            option.title[1].subtext = "";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "厂商销量";
+            option.series[0].data = res.sales;
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": newsales1[index]
+                })
+
+            })
+            option.series[1].name = "厂商销量";
+            option.series[1].label.formatter = '{b}';
+            option.series[1].data = brand;
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+    }
+    // 所有车
+    function allcchart(ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=style&d=" + ym;
+        let carbur = "https://www.keioi.cn/api/car/v1/s?k=brand&d=" + ym;
+        let fet = fetdata(carur);
+        fet.then(res => {
+            return res.json();
+        }).then(res => {
+            // console.log(res)
+            option.title[0].subtext = "全型号销量";
+            option.title[1].subtext = "品牌份额(%)";
+            option.xAxis.data = res.name;
+            option.yAxis.name = ym + "月(辆)";
+            option.series[0].name = "全型号销量";
+            option.series[1].name = "品牌份额";
+            option.series[0].data = res.sales;
+            brdallname = res.name;
+            brdallsales = res.sales;
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+        })
+
+        let fpie = fetdata(carbur);
+        fpie.then(res => {
+            return res.json();
+        }).then(res => {
+            let brand = [];
+            let newname = res.name.slice(0, 50);
+            let newsales = res.sales.slice(0, 50);
+            newname.forEach((item, index) => {
+                brand.push({
+                    "name": item,
+                    "value": parseFloat(newsales[index])
+                })
+
+            })
+            // console.log(brand)
+            brand50 = brand;
+            brand100 = [];
+            let newname1 = res.name.slice(50, 100);
+            let newsales1 = res.sales.slice(50, 100);
+            newname1.forEach((item, index) => {
+                brand100.push({
+                    "name": item,
+                    "value": parseFloat(newsales1[index])
+                })
+
+            })
+
+            option.series[1].data = brand;
+            option.series[1].label.formatter = '{b}:{c}';
+
+            if (res.name.length > 2) {
+                myChart.setOption(option);
+            }
+            myChart.hideLoading();
+
+
+        })
+
+    }
+    // 
+    // 关注
+    function rqcchart(n, ym) {
+        let myChart = echarts.init(document.getElementById('chart'));
+        myChart.clear();
+        myChart.showLoading();
+        let ym1 = ym.slice(0, ym.indexOf("-"));
+
+        let carur = "https://www.keioi.cn/api/car/v1/s?k=rq" + n + "&d=" + ym;
+
+
+        let fwd = fetdata(carur);
+        fwd.then(res => {
+            return res.json();
+        }).then(res => {
+            // console.log(res)
+            let rqj = [];
+            let newname = res.name;
+            let newsales = res.sales;
+            newname.forEach((item, index) => {
+                rqj.push({
+                    "name": item,
+                    "value": newsales[index]
+                })
+
+            })
+
+            optionwd.series[0].data = rqj;
+            setTimeout(function () {
+                myChart.setOption(optionwd);
+                myChart.hideLoading();
+            }, 200)
+
+        })
+
+    }
+
+    // 
+    window.onload = function () {
+        let tm = new Date();
+        let ymonth = document.querySelector("#ymonth");
+        let ymonthe = document.querySelector("#ymonthe");
+        let ym = tm.getFullYear() + "-" + ("0" + (tm.getMonth() == 0 ? 1 : tm.getMonth())).slice(-2);
+        if (tm.getMonth() == 0) {
+            ym = (tm.getFullYear() - 1) + "-" + (tm.getMonth() + 12);
+        }
+        ymonth.value = ym;
+        ymonthe.value = ym;
+        ym = ym.replace("-", "");
+        let dt = ym + "-" + ym;
+        jcchart(dt)
+        let jsal1 = document.querySelector("#jsale1");
+        chartbtnstyle(jsal1);
+        // jsal1.style.border = "2px solid #76c3d6";
+        // jsal1.style.borderRadius = "6px";
+    }
+    // 选日期变化
+    let ymchange = document.querySelector("#ymonth");
+    ymchange.addEventListener("change", function (e) {
+        // console.log(e)
+        let ymval = e.target.value;
+        let ym = ymval.replace("-", "");
+        let ymonthe = document.querySelector("#ymonthe");
+        let yme = ymonthe.value;
+        let dt = ym + "-" + yme.replace("-", "");
+        if (vbtn == 1) {
+            jcchart(dt);
+        }
+        if (vbtn == 2) {
+            succhart(dt);
+        }
+        if (vbtn == 3) {
+            evcchart(dt);
+        }
+        if (vbtn == 4) {
+            or1cchart(dt);
+        }
+        if (vbtn == 5) {
+            or2cchart(dt);
+        }
+        if (vbtn == 6) {
+            facchart(dt);
+        }
+        if (vbtn == 7) {
+            allcchart(dt);
+        }
+        if (vbtn == 8) {
+            rqcchart(1, dt);
+        }
+        if (vbtn == 9) {
+            rqcchart(2, dt);
+        }
+        if (vbtn == 10) {
+            rqcchart(3, dt);
+        }
+    })
+    let ymechange = document.querySelector("#ymonthe");
+    ymechange.addEventListener("change", function (e) {
+        // console.log(e)
+        let ymval = e.target.value;
+        let ym = ymval.replace("-", "");
+        let ymonth = document.querySelector("#ymonth");
+        let ymst = ymonth.value;
+        let dt = ymst.replace("-", "") + "-" + ym;
+        if (vbtn == 1) {
+            jcchart(dt);
+        }
+        if (vbtn == 2) {
+            succhart(dt);
+        }
+        if (vbtn == 3) {
+            evcchart(dt);
+        }
+        if (vbtn == 4) {
+            or1cchart(dt);
+        }
+        if (vbtn == 5) {
+            or2cchart(dt);
+        }
+        if (vbtn == 6) {
+            facchart(dt);
+        }
+        if (vbtn == 7) {
+            allcchart(dt);
+        }
+        if (vbtn == 8) {
+            rqcchart(1, dt);
+        }
+        if (vbtn == 9) {
+            rqcchart(2, dt);
+        }
+        if (vbtn == 10) {
+            rqcchart(3, dt);
+        }
+    })
+    //轿车销量
+    let jsal = document.querySelector("#jsale1");
+    jsal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        jcchart(dt);
+        vbtn = 1;
+        chartbtnboder(chartbtns);
+        // jsal.style.border = "2px solid #76c3d6";
+        // jsal.style.borderRadius = "6px";
+        chartbtnstyle(jsal);
+
+    })
+
+    // suv销量
+    let suvsal = document.querySelector("#suvsale1");
+    suvsal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        succhart(dt);
+        vbtn = 2;
+        chartbtnboder(chartbtns);
+        // suvsal.style.border = "2px solid #76c3d6";
+        // suvsal.style.borderRadius = "6px";
+        chartbtnstyle(suvsal);
+    })
+
+    // 电车销量
+    let evsal = document.querySelector("#evsale1");
+    evsal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        evcchart(dt);
+        vbtn = 3;
+        chartbtnboder(chartbtns);
+        // evsal.style.border = "2px solid #76c3d6";
+        // evsal.style.borderRadius = "6px";
+        chartbtnstyle(evsal);
+    })
+    // 自主销量
+    let or1sal = document.querySelector("#chsale1");
+    or1sal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        or1cchart(dt);
+        vbtn = 4;
+        chartbtnboder(chartbtns);
+        // or1sal.style.border = "2px solid #76c3d6";
+        // or1sal.style.borderRadius = "6px";
+        chartbtnstyle(or1sal);
+    })
+
+    // 合资销量
+    let or2sal = document.querySelector("#fosale1");
+    or2sal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        or2cchart(dt);
+        vbtn = 5;
+        chartbtnboder(chartbtns);
+        // or2sal.style.border = "2px solid #76c3d6";
+        // or2sal.style.borderRadius = "6px";
+        chartbtnstyle(or2sal);
+    })
+
+    // 厂商销量
+    let fasal = document.querySelector("#fasale1");
+    fasal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        facchart(dt);
+        vbtn = 6;
+        chartbtnboder(chartbtns);
+        // fasal.style.border = "2px solid #76c3d6";
+        // fasal.style.borderRadius = "6px";
+        chartbtnstyle(fasal);
+    })
+
+    // 所有车
+    let allsal = document.querySelector("#allsale");
+    allsal.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ymonthe = document.querySelector("#ymonthe").value;
+        let ym = ymonth.replace("-", "");
+        let yme = ymonthe.replace("-", "");
+        let dt = ym + "-" + yme;
+        allcchart(dt);
+        vbtn = 7;
+        chartbtnboder(chartbtns);
+        // allsal.style.border = "2px solid #76c3d6";
+        // allsal.style.borderRadius = "6px";
+        chartbtnstyle(allsal);
+
+    })
+
+
+    // 关注小型
+    let rq1 = document.querySelector("#rq1");
+    rq1.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ym = ymonth.replace("-", "");
+        let dt = ym + "-" + ym;
+        rqcchart(1, dt);
+        vbtn = 8;
+        chartbtnboder(chartbtns);
+        // rq1.style.border = "2px solid #76c3d6";
+        // rq1.style.borderRadius = "6px";
+        chartbtnstyle(rq1);
+    })
+    // 关注紧凑
+    let rq2 = document.querySelector("#rq2");
+    rq2.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ym = ymonth.replace("-", "");
+        let dt = ym + "-" + ym;
+        rqcchart(2, dt);
+        vbtn = 9;
+        chartbtnboder(chartbtns);
+        // rq2.style.border = "2px solid #76c3d6";
+        // rq2.style.borderRadius = "6px";
+        chartbtnstyle(rq2);
+    })
+    // 关注SUV
+    let rq3 = document.querySelector("#rq3");
+    rq3.addEventListener("click", function () {
+        let ymonth = document.querySelector("#ymonth").value;
+        let ym = ymonth.replace("-", "");
+        let dt = ym + "-" + ym;
+        rqcchart(3, dt);
+        vbtn = 10;
+        chartbtnboder(chartbtns);
+        // rq3.style.border = "2px solid #76c3d6";
+        // rq3.style.borderRadius = "6px";
+        chartbtnstyle(rq3);
+    })
+    let chartbtns = [jsal, suvsal, evsal, or1sal, or2sal, fasal, allsal, rq1, rq2, rq3];
+    let chartevet = echarts.init(document.getElementById('chart'));
+    chartevet.on('dblclick', function (param) {
+        // console.log(param)
+        let urcar = "https://keioi.cn/api/carhm/v1/h?k=" + param.name;
+        let fetcar = fetdata(urcar);
+        fetcar.then(res => {
+            return res.json();
+        }).then(res => {
+            let resjson = JSON.parse(res);
+            let detailweb = 0;
+            try {
+                detailweb = resjson.result.list.series.data.more;
+                window.open(detailweb);
+            } catch (err) {
+                let carid = resjson.result.list.car.data.matchwordid;
+                detailweb = `https://car.autohome.com.cn/price/series-${carid}.html`;
+                window.open(detailweb);
+            }
+        })
+        // 
+    })
+    // 右键显示后50名
+    chartevet.on('contextmenu', function (param) {
+        //console.log(param)
+
+        let names50 = [];
+        let value50 = [];
+        let names100 = [];
+        let value100 = [];
+        brand50.forEach((item, index) => {
+            names50.push(item.name);
+            value50.push(item.value);
+            names100.push(brand100[index].name);
+            value100.push(brand100[index].value);
+        })
+        let bnames50 = brdallname.slice(0, 50);
+        let bnames100 = brdallname.slice(50, 100);
+        let bsales50 = brdallsales.slice(0, 50);
+        let bsales100 = brdallsales.slice(50, 100);
+
+        if (param.seriesName != "品牌份额") {
+            if (param.seriesId == '2') {
+                if (option.series[1].data == brand50) {
+                    option.xAxis.data = names100;
+                    option.series[0].data = value100;
+                    option.series[1].data = brand100;
+                } else {
+                    option.xAxis.data = names50;
+                    option.series[0].data = value50;
+                    option.series[1].data = brand50;
+                }
+
+                chartevet.setOption(option);
+
+            }
+        } else {
+            if (param.seriesId == '2') {
+                if (option.series[1].data == brand50) {
+                    option.xAxis.data = bnames100;
+                    option.series[0].data = bsales100;
+                    option.series[1].data = brand100;
+                } else {
+                    option.xAxis.data = bnames50;
+                    option.series[0].data = bsales50;
+                    option.series[1].data = brand50;
+                }
+
+                chartevet.setOption(option);
+
+            }
+        }
+
+    })
+    // 
+    // 移动端双击显示50
+    // 
+    let dbelemt = document.getElementById('chart');
+    let lastTouchTime = 0;
+    // 
+    function phoneClick() {
+        let names50 = [];
+        let value50 = [];
+        let names100 = [];
+        let value100 = [];
+        brand50.forEach((item, index) => {
+            names50.push(item.name);
+            value50.push(item.value);
+            names100.push(brand100[index].name);
+            value100.push(brand100[index].value);
+        })
+        let bnames50 = brdallname.slice(0, 50);
+        let bnames100 = brdallname.slice(50, 100);
+        let bsales50 = brdallsales.slice(0, 50);
+        let bsales100 = brdallsales.slice(50, 100);
+
+        if (chartevet.getOption().title[0].subtext != "全型号销量") {
+
+            if (option.series[1].data == brand50) {
+                option.xAxis.data = names100;
+                option.series[0].data = value100;
+                option.series[1].data = brand100;
+
+            } else {
+                option.xAxis.data = names50;
+                option.series[0].data = value50;
+                option.series[1].data = brand50;
+                shown = 0;
+            }
+
+            chartevet.setOption(option);
+
+
+        } else {
+
+            if (option.series[1].data == brand50) {
+                option.xAxis.data = bnames100;
+                option.series[0].data = bsales100;
+                option.series[1].data = brand100;
+
+            } else {
+                option.xAxis.data = bnames50;
+                option.series[0].data = bsales50;
+                option.series[1].data = brand50;
+                shown = 0;
+
+            }
+
+            chartevet.setOption(option);
+
+        }
+    }
+    // dbelemt.addEventListener('touchstart', function (e) {
+    //     if (e.touches.length === 2) {
+    //         startTouches = e.touches.length;
+            
+    //     }
+    // });
+    // 添加点击事件监听器
+    dbelemt.addEventListener('touchend', function (e) {
+        const nowt = new Date().getTime();
+        if ( nowt - lastTouchTime < 300) {
+                phoneClick(); 
+        }
+        lastTouchTime = nowt;
+    });
+
+
+
+    let option = {
+        title: [
+            {
+                id: 1,
+                show: true,
+                subtext: "",
+                subtextStyle: {
+                    color: '#2552ab',
+                    fontWeight: "bolder"
+                },
+                left: '2%',
+            }, {
+                id: 2,
+                show: true,
+                subtext: "",
+                subtextStyle: {
+                    color: '#019cd5',
+                    fontWeight: "bolder"
+                },
+                left: '30%',
+            }],
+        tooltip: {
+            show: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        // legend: {
+        //     id: 2,
+        //     top: '1%',
+        //     orient: 'horizontal',
+        //     left: 'left'
+        // },
+        grid: [{
+            id: 1,
+            height: '20%',
+            left: '10%',
+            bottom: '9%'
+        }],
+        dataZoom: [
+            {
+                type: "inside",
+                start: 0,
+                end: 18
+            }
+        ],
+        xAxis: {
+            data: [],
+            axisLine: {
+                lineStyle: {
+                    color: '#5173b7'
+                }
+            },
+            axisLabel: {
+                color: '#5173b7',
+                interval: '0',
+                fontWeight: 'bold',
+                rotate: 30
+                // fontSize: 12
+            },
+            axisTick: {
+                interval: '0'
+            }
+        },
+        yAxis: {
+            name: "",
+            nameTextStyle: {
+                color: '#5173b7',
+                fontWeight: 'bold',
+                // fontSize: 10
+            },
+
+            axisLine: {
+                lineStyle: {
+                    color: '#5173b7'
+                }
+            },
+            axisLabel: {
+                color: '#5173b7',
+                fontWeight: 'bold',
+                // fontSize: 10
+            },
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: '#0177d4'
+                }
+            },
+            // interval: 500,
+            // max: 5000
+
+        },
+        series: [{
+            type: 'bar',
+            name: "销量",
+            barWidth: 16,
+            id: 1,
+            zlevel: 1,
+            colorBy: 'data',
+            itemStyle: {
+
+            },
+            label: {
+                show: false,
+                position: 'top',
+                color: 'inherit',
+                formatter: '{c}',
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: 'bold'
+                }
+            },
+            data: []
+        },
+        {
+            type: 'pie',
+            name: "品牌份额",
+            id: 2,
+            center: ['68%', '25%'],
+            radius: '35%',
+            zlevel: 2,
+            height: '80%',
+            minAngle: 6,
+            label: {
+                show: true,
+                position: 'outside',
+                color: 'inherit',
+                formatter: '{b}:{c}',
+            },
+            itemStyle: {
+                borderRadius: 6,
+                borderColor: '#fff',
+                borderWidth: 1
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: 'bold'
+                }
+            },
+
+            data: []
+        }
+        ]
+    };
+
+    let optionwd = {
+        title: {
+            subtext: "",
+            subtextStyle: {
+                color: '#019cd5',
+                fontWeight: "bolder"
+            },
+        },
+        tooltip: {
+            show: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                saveAsImage: {}
+            }
+        },
+
+        series: [{
+            type: "wordCloud",
+            gridSize: 8,
+            // shape: 'circle',
+            sizeRange: [12, 48],
+            width: 600,
+            height: 480,
+            textStyle: {
+                fontFamily: 'sans-serif',
+                fontWeight: 'bold',
+                color: function () {
+                    return 'rgb(' + [
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160)
+                    ].join(',') + ')';
+                }
+
+            },
+            emphasis: {
+                textStyle: {
+                    shadowBlur: 6,
+                    shadowColor: '#333'
+                }
+
+            },
+            data: [],
+        }]
+    };
+
+</script>
+
+</html>
