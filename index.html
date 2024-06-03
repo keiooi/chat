@@ -798,7 +798,12 @@
             option.series[1].data = brand;
             if (res.name.length > 2) {
                 myChart.setOption(option);
-            }
+            }else{
+		option.yAxis.name = "";
+                option.title[0].subtext = "每月在11号更新。";
+                option.title[1].subtext = "";
+                myChart.setOption(option);  
+	    }
             myChart.hideLoading();
 
         })
