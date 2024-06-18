@@ -198,6 +198,7 @@
 	#connbtn,
 	#clsbtn,
 	#clspbtn,
+	#expbtn,
 	#emojibtn,
 	#sendbtn {
 		cursor: pointer;
@@ -213,6 +214,7 @@
 	#connbtn:hover,
 	#clsbtn:hover,
 	#clspbtn:hover,
+	#expbtn:hover,
 	#emojibtn:hover,
 	#sendbtn:hover {
 		color: #d5a9d0;
@@ -378,6 +380,7 @@
 					<input type="button" value="连接" id="connbtn">
 					<input type="button" value="清聊天" id="clsbtn">
 					<input type="button" value="清私聊" id="clspbtn">
+					<input type="button" value="导出" id="expbtn">
 					<span id="pernotic">私聊<span id="notpt" style="display:none"></span></span>
 					<div class="noticposition">
 						<div id="notshow" style="display:none"></div>
@@ -676,6 +679,32 @@
         }
 
     })
+    // 导出
+    document.getElementById('expbtn').addEventListener('click', function () {
+	if(confirm("确定导出聊天记录？")){
+        let text = document.querySelector('.msgbox').innerHTML;
+        let blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        let url = URL.createObjectURL(blob);
+
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'qx.html';
+        a.click();
+
+        URL.revokeObjectURL(url);
+
+        let text1 = document.querySelector('#notshow').innerHTML;
+        let blob1 = new Blob([text1], { type: 'text/plain;charset=utf-8' });
+        let url1 = URL.createObjectURL(blob1);
+
+        let a1 = document.createElement('a');
+        a1.href = url1;
+        a1.download = 'sx.html';
+        a1.click();
+
+        URL.revokeObjectURL(url1);
+	}
+    });
 
 
     // 发送
