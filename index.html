@@ -1467,8 +1467,14 @@
                 detailweb = resjson.result.list.series.data.more;
                 window.open(detailweb);
             } catch (err) {
-                let carid = resjson.result.list.car.data.matchwordid;
-                detailweb = `https://car.autohome.com.cn/price/series-${carid}.html`;
+                let carid='';
+                try {
+                    carid = resjson.result.list.car.data.matchwordid;
+                    detailweb = `https://car.autohome.com.cn/price/series-${carid}.html`;
+                } catch {
+                    carid=resjson.result.matchwordid;
+                    detailweb = `https://car.autohome.com.cn/price/series-${carid}.html`;
+                }
                 window.open(detailweb);
             }
         })
